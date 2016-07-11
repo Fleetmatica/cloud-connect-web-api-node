@@ -1,0 +1,1 @@
+module.exports = require('./lib/cloud-connect-web-api.js');
