@@ -15,7 +15,10 @@
   "scripts": {
     "start": "node index.js",
     "test": "NODE_ENV=test mocha ./test/*.js",
-    "test-auth": "NODE_ENV=test mocha ./test/authentication-request.js",
+    "test-base-request": "NODE_ENV=test mocha ./test/base-request.js",
+    "test-http-manager": "NODE_ENV=test mocha ./test/http-manager.js",
+    "test-webapi-request": "NODE_ENV=test mocha ./test/webapi-request.js",
+    "test-cloud-connect-web-api": "NODE_ENV=test mocha ./test/*cloud-connect-web-api.js",
     "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*"
   },
   "repository": {
