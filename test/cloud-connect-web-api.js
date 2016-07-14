@@ -353,4 +353,97 @@ describe('CloudConnect Web API', function () {
       });
   });
 
-});
+  it("should retrieve all assets linked to a specific configuration", function (done) {
+    sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+      method.should.equal(restler.get);
+      uri.should.equal('https://dashboard.munic.io/api/v2/configurations/409/assets');
+      should.not.exist(options.data);
+      callback(null, {
+        body: [
+          {
+            "id": 1215,
+            "asset": "359858012812890",
+            "asset_group_id": null,
+            "last_activity_at": "2014-05-20T14:41:20+02:00",
+            "last_connection_at": "2014-05-20T14:41:41+02:00",
+            "current_configuration": [],
+            "os_version_id": 94
+          },
+          {
+            "id": 1232,
+            "asset": "357322040071232",
+            "asset_group_id": null,
+            "last_activity_at": "2014-05-20T16:06:18+02:00",
+            "last_connection_at": "2014-05-20T16:08:33+02:00",
+            "current_configuration": [],
+            "os_version_id": 94
+          }
+        ], statusCode: 200
+      });
+    });
+
+    var credentials = {
+      userToken: '653638dc733afce75130303fe6e6010f63768af0'
+    };
+
+    var api = new CloudConnectWebApi(credentials);
+    api.getConfigurationAssets('409')
+      .then(function (data) {
+        (data.body[0].id).should.equal(1215);
+        (data.body[1].id).should.equal(1232);
+        (data.statusCode).should.equal(200);
+        done();
+      }, function (err) {
+        done(err);
+      });
+
+  });
+
+  it("should retrieve all assets linked to a specific configuration", function (done) {
+    sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+      method.should.equal(restler.get);
+      uri.should.equal('https://dashboard.munic.io/api/v2/configurations/410/compatible_assets');
+      should.not.exist(options.data);
+      callback(null, {
+        body: [
+          {
+            "id": 1216,
+            "asset": "359858012812890",
+            "asset_group_id": null,
+            "last_activity_at": "2014-05-20T14:41:20+02:00",
+            "last_connection_at": "2014-05-20T14:41:41+02:00",
+            "current_configuration": [],
+            "os_version_id": 94
+          },
+          {
+            "id": 1233,
+            "asset": "357322040071232",
+            "asset_group_id": null,
+            "last_activity_at": "2014-05-20T16:06:18+02:00",
+            "last_connection_at": "2014-05-20T16:08:33+02:00",
+            "current_configuration": [],
+            "os_version_id": 94
+          }
+        ], statusCode: 200
+      });
+    });
+
+    var credentials = {
+      userToken: '653638dc733afce75130303fe6e6010f63768af0'
+    };
+
+    var api = new CloudConnectWebApi(credentials);
+    api.getConfigurationCompatibleAssets('410')
+      .then(function (data) {
+        (data.body[0].id).should.equal(1216);
+        (data.body[1].id).should.equal(1233);
+        (data.statusCode).should.equal(200);
+        done();
+      }, function (err) {
+        done(err);
+      });
+
+  });
+
+})
+;
