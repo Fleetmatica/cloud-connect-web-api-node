@@ -58,11 +58,35 @@ Visible configurations information
 
 `getConfigurationCompatibleAssets(configId)`
 
+### Assets
+
+#### List of visible assets
+
+`getAssets(options, cb)`
+
+#### Get a specific asset
+
+`getAsset(imei, options, cb)`
+
+#### Show vehicle information declare on the asset
+
+`getVehicleInfo(imei, cb)`
+
+#### Update vehicle information declare on the asset
+
+`updateVehicleInfo(imei, options, cb)`
+
+#### Retrieve the current configuration for a specific asset and return the configuration for the OS version and for each module that could be configured.
+
+`getAssetConfiguration(imei, cb)`
+
+
 ## TODO
 
 ### General
 
 * manage pagination
+* improve docs
 
 ### API
 
