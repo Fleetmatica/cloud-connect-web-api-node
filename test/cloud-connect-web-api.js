@@ -536,7 +536,7 @@ describe('CloudConnect Web API', function () {
 
     });
 
-    it("should retrieve get a specific asset", function (done) {
+    it("should retrieve a specific asset", function (done) {
       sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
         method.should.equal(restler.get);
         uri.should.equal('https://dashboard.munic.io/api/v2/assets/359858012812890');
@@ -573,7 +573,7 @@ describe('CloudConnect Web API', function () {
 
     });
 
-    it("should retrieve get a specific asset with pending_configuration option", function (done) {
+    it("should retrieve a specific asset with pending_configuration option", function (done) {
       sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
         method.should.equal(restler.get);
         uri.should.equal('https://dashboard.munic.io/api/v2/assets/359858012812890');
@@ -610,7 +610,7 @@ describe('CloudConnect Web API', function () {
 
     });
 
-    it("should retrieve get vehicle information declare on the asset", function (done) {
+    it("should retrieve vehicle information declare on the asset", function (done) {
       sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
         method.should.equal(restler.get);
         uri.should.equal('https://dashboard.munic.io/api/v2/assets/359858012812890/vehicle_informations');
@@ -631,7 +631,7 @@ describe('CloudConnect Web API', function () {
       };
 
       var api = new CloudConnectWebApi(credentials);
-      api.getVechileInfo('359858012812890')
+      api.getVehicleInfo('359858012812890')
         .then(function (data) {
           (data.body.mark).should.equal('VW');
           (data.body.model).should.equal('GOLF');
@@ -672,7 +672,7 @@ describe('CloudConnect Web API', function () {
 
       var api = new CloudConnectWebApi(credentials);
 
-      api.updateVechileInfo('359858012812890',
+      api.updateVehicleInfo('359858012812890',
         {
           "mark": "VW",
           "model": "GOLF",

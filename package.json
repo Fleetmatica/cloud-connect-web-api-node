@@ -26,17 +26,15 @@
     "url": "https://github.com/ceccode/cloud-connect-web-api-node.git"
   },
   "dependencies": {
-    "restler": "~3.2.0",
-    "promise": "~5.0.0"
+    "restler": "*",
+    "promise": "*"
   },
   "devDependencies": {
     "istanbul": "*",
     "mocha": "*",
-    "coveralls": "^2.11.2",
-    "mockery": "^1.4.0",
-    "should": "~3.0",
-    "sinon": "~1.12.2",
-    "xunit-file": "0.0.5"
+    "mockery": "*",
+    "should": "*",
+    "sinon": "*"
   },
   "keywords": [
     "cloud connect",
