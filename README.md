@@ -66,7 +66,6 @@ Visible configurations information
 
 ### API
 
-* Assets
 * Assets groups
 * Campaigns 
 * Driver profiles 
