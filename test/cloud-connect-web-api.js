@@ -746,4 +746,154 @@ describe('CloudConnect Web API', function () {
 
   });
 
+  describe("Assets groups", function () {
+
+    it("should retrieve assets groups passing a callback", function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.get);
+        uri.should.equal('https://dashboard.munic.io/api/v2/assets_groups');
+        should.not.exist(options.data);
+        callback(null, {
+          body: [
+            {
+              "id": 53,
+              "name": "kaki",
+              "assets": ["359858024351692", "359858021918949"]
+            },
+            {
+              "id": 52,
+              "name": "Group 52",
+              "assets": ["359858024351692"]
+            }
+          ],
+          statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      api.getAssetsGroups(function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        (data.body[0].id).should.equal(53);
+        (data.statusCode).should.equal(200);
+        done();
+      });
+
+    });
+
+    it("should retrieve detailed information about a specific asset group", function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.get);
+        uri.should.equal('https://dashboard.munic.io/api/v2/assets_groups/53');
+        should.not.exist(options.data);
+        callback(null, {
+          body: {
+            "id": 53,
+            "name": "kaki",
+            "assets": ["359858024351692", "359858021918949"]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      api.getAssetsGroup('53')
+        .then(function (data) {
+          (data.body.id).should.equal(53);
+          (data.body.name).should.equal('kaki');
+          (data.statusCode).should.equal(200);
+          done();
+        }, function (err) {
+          done(err);
+        });
+
+    });
+
+    it('should create a new asset group using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.post);
+        uri.should.equal('https://dashboard.munic.io/api/v2/assets_groups');
+        JSON.parse(options.data).should.eql(
+          {
+            "name": "test group",
+            "asset_imeis": ["359858024351692", "359858021918949"]
+          }
+        );
+        should.not.exist(options.query);
+
+        callback(null, {
+          body: {
+            "name": "test group",
+            "assets": ["359858024351692", "359858021918949"]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      var options = {
+        "name": "test group",
+        "asset_imeis": ["359858024351692", "359858021918949"]
+      };
+
+      api.createAssetsGroup(options, function (err, data) {
+        'test group'.should.equal(data.body.name);
+        (200).should.equal(data.statusCode);
+        done();
+      });
+    });
+
+    it('should update a configuration using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.put);
+        uri.should.equal('https://dashboard.munic.io/api/v2/assets_groups/54');
+        JSON.parse(options.data).should.eql(
+          {
+            "name": "test group renamed",
+            "asset_imeis": ["359858024351692"]
+          }
+        );
+        should.not.exist(options.query);
+        callback(null, {
+          body: {
+            "id": 54,
+            "name": "test group renamed",
+            "assets": ["359858024351692"]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+
+      api.updateAssetsGroup(
+        54,
+        {
+          "name": "test group renamed",
+          "asset_imeis": ["359858024351692"]
+        },
+        function (err, data) {
+          (54).should.equal(data.body.id);
+          'test group renamed'.should.equal(data.body.name);
+          (200).should.equal(data.statusCode);
+          done();
+        });
+    });
+
+  });
+
 });
