@@ -86,16 +86,36 @@ Visible configurations information
 `getAssetConfiguration(imei, cb)`
 
 
+### Assets Group
+
+#### List of existing asset groups
+
+`getAssetsGroups(callback)`
+
+#### Show details for a specific asset group
+
+`getAssetsGroup(assetGroupId, callback)`
+
+#### Create a new asset group
+
+`createAssetsGroup(options, callback)`
+
+#### Update existing configuration
+
+`updateAssetsGroup(assetGroupId, options, callback)`
+
+
+
 ## TODO
 
 ### General
 
 * manage pagination
+* add validations
 * improve docs
 
 ### API
 
-* Assets groups
 * Campaigns 
 * Driver profiles 
 * Remote files 
