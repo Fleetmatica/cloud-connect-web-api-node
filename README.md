@@ -105,6 +105,41 @@ Visible configurations information
 `updateAssetsGroup(assetGroupId, options, callback)`
 
 
+### Campaigns
+
+#### List of visible campaigns
+
+`getCampaigns(callback)`
+
+#### List of archived campaigns
+
+`getCampaignsArchive(callback)`
+
+#### Get a specific campaign
+
+`getCampaign(campaignId, callback)`
+
+#### Create a campaign
+
+Create an asset update campaign by providing a name, a list of configurations or a sotfware version, a list of assets, and / or a list of asset groups. There can be one or more configurations, and there must be at least when valid asset (either alone or in an asset group).
+
+```
+createCampaignToUpdateConfig(configIds, options, callback)
+createCampaignToUpdateSoftware(newVersion, options, callback)
+```
+
+#### Edit a campaign
+
+Modify an assets name, provide a new list of assets or change configurations. You can not modify a campaign that has already been sent.
+
+`updateCampaign(campaignId, options, callback)`
+
+#### Launch a campaign
+
+Launch a campaign targeting all assets both compatible and not already being updated in another campaign.
+
+`launchCampaign(campaignId, options, callback)`
+
 
 ## TODO
 
@@ -116,7 +151,6 @@ Visible configurations information
 
 ### API
 
-* Campaigns 
 * Driver profiles 
 * Remote files 
 * Vehicles 

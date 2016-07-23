@@ -1,11 +1,10 @@
+'use strict';
+
 var restler = require('restler'),
   HttpManager = require('../lib/http-manager'),
   sinon = require('sinon'),
   CloudConnectWebApi = require('../lib/cloud-connect-web-api'),
-  GenericError = require('../lib/generic-error'),
   should = require('should');
-
-'use strict';
 
 describe('CloudConnect Web API', function () {
 
@@ -892,6 +891,346 @@ describe('CloudConnect Web API', function () {
           (200).should.equal(data.statusCode);
           done();
         });
+    });
+
+  });
+
+  describe("Campaigns", function () {
+
+    it("should retrieve campaigns passing a callback", function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.get);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns');
+        should.not.exist(options.data);
+        callback(null, {
+          body: [
+            {
+              "id": 271,
+              "name": "Campaign test 2",
+              "created_at": "April 28, 2014 15:37",
+              "status": "Pending",
+              "targeted_asset_count": 9,
+              "asset_group_count": 1,
+              "warnings": "2 incompatible assets"
+            },
+            {
+              "id": 270,
+              "name": "Campaign test 1",
+              "created_at": "April 25, 2014 13:28",
+              "status": "Sent",
+              "targeted_asset_count": 1,
+              "asset_group_count": 1
+            }
+          ],
+          statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      api.getCampaigns(function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        (data.body[0].id).should.equal(271);
+        (data.body[1].name).should.equal("Campaign test 1");
+        (data.statusCode).should.equal(200);
+        done();
+      });
+
+    });
+
+    it("should retrieve archived campaigns passing a callback", function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.get);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns?archived=true');
+        should.not.exist(options.data);
+        callback(null, {
+          body: [
+            {
+              "id": 275,
+              "name": "Archived Campaign test 2",
+              "created_at": "April 28, 2014 15:37",
+              "status": "Pending",
+              "targeted_asset_count": 9,
+              "asset_group_count": 1,
+              "warnings": "2 incompatible assets"
+            },
+            {
+              "id": 276,
+              "name": "Archived Campaign test 1",
+              "created_at": "April 25, 2014 13:28",
+              "status": "Sent",
+              "targeted_asset_count": 1,
+              "asset_group_count": 1
+            }
+          ],
+          statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      api.getCampaignsArchive(function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        (data.body[0].id).should.equal(275);
+        (data.body[0].name).should.equal("Archived Campaign test 2");
+        (data.statusCode).should.equal(200);
+        done();
+      });
+
+    });
+
+    it("should retrieve detailed information about a campaign", function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.get);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns/271');
+        should.not.exist(options.data);
+        callback(null, {
+          body: {
+            "id": 271,
+            "name": "Ze aPi TEst3",
+            "created_at": "April 28, 2014 15:37",
+            "status": "Pending",
+            "asset_configuration_list": [390, 397],
+            "targeted_asset_count": 1,
+            "targeted_assets": [],
+            "assets_status": [{"imei": "XXX", "status": ""}],
+            "asset_group_count": 1,
+            "asset_group_ids": [52],
+            "warnings": ["The following assets are not compatible with the campaign's configurations : ", ["359858024444692"]]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+      api.getCampaign('271')
+        .then(function (data) {
+          (data.body.id).should.equal(271);
+          (data.body.name).should.equal('Ze aPi TEst3');
+          (data.statusCode).should.equal(200);
+          done();
+        }, function (err) {
+          done(err);
+        });
+
+    });
+
+    it('should create a campaign to update the configuation using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.post);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns');
+        JSON.parse(options.data).should.eql(
+          {
+            "name": "test campaign",
+            "asset_group_ids": [],
+            "update_type": 0,
+            "config_ids": [414, 413],
+            "targeted_asset_imeis": ["357322044471026", "359858033385302"],
+            "ignore_last_campaign": false,
+            "force_update": false
+          }
+        );
+        should.not.exist(options.query);
+
+        callback(null, {
+          body: {
+            "id": 272,
+            "name": "test campaign",
+            "created_at": "April 28, 2014 15:37",
+            "status": "Pending",
+            "asset_configuration_list": [414, 413],
+            "targeted_asset_count": 2,
+            "targeted_assets": ["357322044471026", "359858033385302"],
+            "asset_group_count": 0,
+            "asset_group_ids": [],
+            "warnings": ["The following assets are not compatible with the campaign's configurations : ", ["357322044471026"]]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+
+      var configIds = [414, 413];
+      var options = {
+        "name": "test campaign",
+        "asset_group_ids": [],
+        "targeted_asset_imeis": ["357322044471026", "359858033385302"],
+        "ignore_last_campaign": false,
+        "force_update": false
+      };
+
+      api.createCampaignToUpdateConfig(configIds, options, function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        console.log(data);
+        'test campaign'.should.equal(data.body.name);
+        (200).should.equal(data.statusCode);
+        done();
+      });
+    });
+
+    it('should create a campaign to update the software using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.post);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns');
+        JSON.parse(options.data).should.eql(
+          {
+            "name": "test campaign",
+            "asset_group_ids": [],
+            "to_version": 28,
+            "update_type": 1,
+            "targeted_asset_imeis": ["357322044471026", "359858033385302"],
+            "ignore_last_campaign": false,
+            "force_update": false
+          }
+        );
+        should.not.exist(options.query);
+
+        callback(null, {
+          body: {
+            "id": 272,
+            "name": "test campaign",
+            "created_at": "April 28, 2014 15:37",
+            "status": "Pending",
+            "asset_configuration_list": [414, 413],
+            "targeted_asset_count": 2,
+            "targeted_assets": ["357322044471026", "359858033385302"],
+            "asset_group_count": 0,
+            "asset_group_ids": [],
+            "warnings": ["The following assets are not compatible with the campaign's configurations : ", ["357322044471026"]]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+
+      var newVersion = 28;
+      var options = {
+        "name": "test campaign",
+        "asset_group_ids": [],
+        "targeted_asset_imeis": ["357322044471026", "359858033385302"],
+        "ignore_last_campaign": false,
+        "force_update": false
+      };
+
+      api.createCampaignToUpdateSoftware(newVersion, options, function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        'test campaign'.should.equal(data.body.name);
+        (200).should.equal(data.statusCode);
+        done();
+      });
+    });
+
+    it('should update a campaign using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.put);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns/272/edit');
+        JSON.parse(options.data).should.eql({
+          "name" : "test campaign renamed"
+        });
+        should.not.exist(options.query);
+        callback(null, {
+          body: {
+            "id": 272,
+            "name": "test campaign renamed",
+            "created_at": "April 28, 2014 15:37",
+            "status": "Pending",
+            "asset_configuration_list": [414, 413],
+            "targeted_asset_count": 2,
+            "targeted_assets": ["357322044471026", "359858033385302"],
+            "asset_group_count": 0,
+            "asset_group_ids": [],
+            "warnings": ["The following assets are not compatible with the campaign's configurations : ", ["357322044471026"]]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+
+      var options = {
+        "name" : "test campaign renamed"
+      };
+
+      api.updateCampaign(272, options, function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        (272).should.equal(data.body.id);
+        'test campaign renamed'.should.equal(data.body.name);
+        'Pending'.should.equal(data.body.status);
+        (200).should.equal(data.statusCode);
+        done();
+      });
+
+    });
+
+    it('should launch a campaign using callback', function (done) {
+      sinon.stub(HttpManager, '_makeRequest', function (method, options, uri, callback) {
+        method.should.equal(restler.put);
+        uri.should.equal('https://dashboard.munic.io/api/v2/campaigns/272/launch');
+        JSON.parse(options.data).should.eql({});
+        should.not.exist(options.query);
+        callback(null, {
+          body: {
+            "id": 272,
+            "name": "test campaign renamed",
+            "created_at": "April 28, 2014 15:37",
+            "status": "Sent",
+            "asset_configuration_list": [414, 413],
+            "targeted_asset_count": 2,
+            "targeted_assets": ["357322044471026", "359858033385302"],
+            "asset_group_count": 0,
+            "asset_group_ids": [],
+            "warnings": ["The following assets are not compatible with the campaign's configurations : ", ["357322044471026"]]
+          }, statusCode: 200
+        });
+      });
+
+      var credentials = {
+        userToken: '653638dc733afce75130303fe6e6010f63768af0'
+      };
+
+      var api = new CloudConnectWebApi(credentials);
+
+      api.launchCampaign(272, {}, function (err, data) {
+        if (err) {
+          return done(err);
+        }
+        (272).should.equal(data.body.id);
+        'test campaign renamed'.should.equal(data.body.name);
+        'Sent'.should.equal(data.body.status);
+        (200).should.equal(data.statusCode);
+        done();
+      });
+
     });
 
   });
