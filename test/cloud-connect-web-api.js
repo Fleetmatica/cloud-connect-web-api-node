@@ -628,7 +628,7 @@ describe('CloudConnect Web API', () => {
       }
 
       var api = new CloudConnectWebApi(credentials)
-      api.getVehicleInfo('359858012812890')
+      api.getAssetVehicleInfo('359858012812890')
         .then(function (data) {
           (data.body.mark).should.equal('VW');
           (data.body.model).should.equal('GOLF');
@@ -669,7 +669,7 @@ describe('CloudConnect Web API', () => {
 
       var api = new CloudConnectWebApi(credentials)
 
-      api.updateVehicleInfo('359858012812890',
+      api.updateAssetVehicleInfo('359858012812890',
         {
           'mark': 'VW',
           'model': 'GOLF',
