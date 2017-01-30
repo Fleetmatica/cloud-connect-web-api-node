@@ -2,10 +2,9 @@
 
 NodeJS API wrapper for Mobile Devices Cloud Connect
 
-[![Build Status](https://travis-ci.org/ceccode/cloud-connect-web-api-node.svg?branch=master)](https://travis-ci.org/ceccode/cloud-connect-web-api-node)
-[![Known Vulnerabilities](https://snyk.io/test/github/ceccode/cloud-connect-web-api-node/badge.svg)](https://snyk.io/test/github/ceccode/cloud-connect-web-api-node)
-[![https://david-dm.org/ceccode/cloud-connect-web-api-node.svg](https://david-dm.org/ceccode/cloud-connect-web-api-node.svg)](https://david-dm.org/ceccode/cloud-connect-web-api-node.svg)
-
+[![Build Status](https://travis-ci.org/Fleetmatica/cloud-connect-web-api-node.svg?branch=master)](https://travis-ci.org/Fleetmatica/cloud-connect-web-api-node)
+[![Known Vulnerabilities](https://snyk.io/test/github/Fleetmatica/cloud-connect-web-api-node/badge.svg)](https://snyk.io/test/github/Fleetmatica/cloud-connect-web-api-node)
+[![https://david-dm.org/Fleetmatica/cloud-connect-web-api-node.svg](https://david-dm.org/Fleetmatica/cloud-connect-web-api-node.svg)](https://david-dm.org/Fleetmatica/cloud-connect-web-api-node.svg)
 
 ## Usage
 
