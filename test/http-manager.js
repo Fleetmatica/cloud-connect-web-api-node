@@ -1,5 +1,7 @@
-var mockery = require('mockery');
-var Request = require("../lib/base-request");
+'use strict'
+
+var mockery = require('mockery')
+var Request = require('../lib/base-request')
 
 function useRestlerMock(options) {
   // method
@@ -14,20 +16,20 @@ function useRestlerMock(options) {
       callback(options.response.data, {
         headers: options.response.headers || {},
         statusCode: options.response.statusCode || 200
-      });
+      })
     }
-    return {on: onFunction};
-  };
+    return {on: onFunction}
+  }
 
-  var restlerMock = { };
+  var restlerMock = { }
   restlerMock[options.method] = function (url, opt) {
     return { on: onFunction }
-  };
+  }
 
-  mockery.registerMock('restler', restlerMock);
+  mockery.registerMock('restler', restlerMock)
 }
 
-describe("Make requests", function() {
+describe('Make requests', function() {
 
   beforeEach(function(){
 
@@ -35,17 +37,17 @@ describe("Make requests", function() {
       warnOnReplace: false,
       warnOnUnregistered: false,
       useCleanCache: true
-    });
-  });
+    })
+  })
 
   afterEach(function(){
-    mockery.deregisterAll();
-    mockery.disable();
-  });
+    mockery.deregisterAll()
+    mockery.disable()
+  })
 
-  describe("GET requests", function() {
+  describe('GET requests', function() {
 
-    it("Should make a successful GET request", function(done) {
+    it('Should make a successful GET request', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -55,21 +57,21 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 200
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        done(errorObject);
-      });
-    });
+        done(errorObject)
+      })
+    })
 
-    it("Should process a failing GET request with a generic error", function(done) {
+    it('Should process a failing GET request with a generic error', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -79,22 +81,22 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 500
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        done()
+      })
+    })
 
-    it("Should process a failing GET request with a string error", function(done) {
+    it('Should process a failing GET request with a string error', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -104,23 +106,23 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 500
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('Request failed: \"There was a problem processing your request\"');
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('Request failed: \"There was a problem processing your request\"')
+        done()
+      })
+    })
 
-    it("Should process a failing GET request with a Web API error object with description", function(done) {
+    it('Should process a failing GET request with a Web API error object with description', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -130,23 +132,23 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 404
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('Unknown user: User does not exist');
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('Unknown user: User does not exist')
+        done()
+      })
+    })
 
-    it("Should process a failing GET request with a JSON string formatted error object with message and status", function(done) {
+    it('Should process a failing GET request with a JSON string formatted error object with message and status', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -156,24 +158,24 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 429
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('API rate limit exceeded');
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('API rate limit exceeded')
         errorObject.statusCode.should.equal(429)
-        done();
-      });
-    });
+        done()
+      })
+    })
 
-    it("Should process a failing GET request with a Web API error object with message", function(done) {
+    it('Should process a failing GET request with a Web API error object with message', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -183,23 +185,23 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 404
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('User does not exist');
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('User does not exist')
+        done()
+      })
+    })
 
-    it("Should process an error GET request", function(done) {
+    it('Should process an error GET request', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -209,23 +211,23 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 401
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('Request error');
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('Request error')
+        done()
+      })
+    })
 
-    it("Should process an error GET request with an error message", function(done) {
+    it('Should process an error GET request with an error message', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -235,23 +237,23 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 401
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('There is a problem in your request');
-        done();
-      });
-    });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('There is a problem in your request')
+        done()
+      })
+    })
 
-    it("Should process a timing out GET request", function(done) {
+    it('Should process a timing out GET request', function(done) {
 
       useRestlerMock({
         method: 'get',
@@ -261,24 +263,24 @@ describe("Make requests", function() {
           headers: {},
           statusCode: 404
         }
-      });
+      })
 
-      var HttpManager = require('../lib/http-manager');
+      var HttpManager = require('../lib/http-manager')
       var request = Request.builder()
-        .withHost("such.api.wow")
+        .withHost('such.api.wow')
         .withPort(1337)
-        .withScheme("http")
-        .build();
+        .withScheme('http')
+        .build()
 
       HttpManager.get(request, function(errorObject) {
-        errorObject.should.be.an.instanceOf(Error);
-        errorObject.message.should.equal('Request timed out (2000)');
-        done();
-      });
-    });
-  });
+        errorObject.should.be.an.instanceOf(Error)
+        errorObject.message.should.equal('Request timed out (2000)')
+        done()
+      })
+    })
+  })
 
-  it("Should make a successful POST request", function(done) {
+  it('Should make a successful POST request', function(done) {
 
     useRestlerMock({
       method: 'post',
@@ -288,21 +290,21 @@ describe("Make requests", function() {
         headers: {},
         statusCode: 200
       }
-    });
+    })
 
-    var HttpManager = require('../lib/http-manager');
+    var HttpManager = require('../lib/http-manager')
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
-      .build();
+      .withScheme('http')
+      .build()
 
     HttpManager.post(request, function(errorObject) {
-      done(errorObject);
-    });
-  });
+      done(errorObject)
+    })
+  })
 
-  it("Should make a successful PUT request", function(done) {
+  it('Should make a successful PUT request', function(done) {
 
     useRestlerMock({
       method: 'put',
@@ -312,21 +314,21 @@ describe("Make requests", function() {
         headers: {},
         statusCode: 200
       }
-    });
+    })
 
-    var HttpManager = require('../lib/http-manager');
+    var HttpManager = require('../lib/http-manager')
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
-      .build();
+      .withScheme('http')
+      .build()
 
     HttpManager.put(request, function(errorObject) {
-      done(errorObject);
-    });
-  });
+      done(errorObject)
+    })
+  })
 
-  it("Should make a successful DELETE request", function(done) {
+  it('Should make a successful DELETE request', function(done) {
 
     useRestlerMock({
       method: 'del',
@@ -336,17 +338,17 @@ describe("Make requests", function() {
         headers: {},
         statusCode: 200
       }
-    });
+    })
 
-    var HttpManager = require('../lib/http-manager');
+    var HttpManager = require('../lib/http-manager')
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
-      .build();
+      .withScheme('http')
+      .build()
 
     HttpManager.del(request, function(errorObject) {
-      done(errorObject);
-    });
-  });
-});
+      done(errorObject)
+    })
+  })
+})

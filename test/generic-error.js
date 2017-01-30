@@ -1,12 +1,14 @@
-var GenericError = require("../lib/generic-error"),
-    should = require("should");
+'use strict'
 
-describe("Create Generic Error", function() {
+const GenericError = require('../lib/generic-error')
+const should = require('should')
 
-  it("should create error with message and status code", function() {
-    var error = new GenericError("Something has gone wrong, ops!", 500);
-    ("Something has gone wrong, ops!").should.equal(error.message);
-    (500).should.equal(error.statusCode);
-  });
+describe('Create Generic Error', function() {
 
-});
+  it('should create error with message and status code', function() {
+    var error = new GenericError('Something has gone wrong, ops!', 500);
+    ('Something has gone wrong, ops!').should.equal(error.message);
+    (500).should.equal(error.statusCode)
+  })
+
+})

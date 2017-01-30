@@ -1,105 +1,107 @@
-var Request = require("../lib/base-request"),
-    should = require("should");
+'use strict'
 
-describe("Create Requests", function() {
+const Request = require('../lib/base-request')
+const should = require('should')
 
-  it("Should create host, port, and scheme", function() {
+describe('Create Requests', function () {
+
+  it('Should create host, port, and scheme', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
-      .build();
+      .withScheme('http')
+      .build()
 
-    request.getHost().should.equal("such.api.wow");
-    request.getPort().should.equal(1337);
-    request.getScheme().should.equal("http");
-  });
+    request.getHost().should.equal('such.api.wow')
+    request.getPort().should.equal(1337)
+    request.getScheme().should.equal('http')
+  })
 
-  it("Should add query parameters", function() {
+  it('Should add query parameters', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
+      .withScheme('http')
       .withQueryParameters({
-        "oneParameter" : 1,
-        "anotherParameter" : true,
-        "thirdParameter" : "hello"
+        'oneParameter': 1,
+        'anotherParameter': true,
+        'thirdParameter': 'hello'
       })
-      .build();
+      .build()
 
-    request.getQueryParameters().oneParameter.should.equal(1);
-    request.getQueryParameters().anotherParameter.should.equal(true);
-    request.getQueryParameters().thirdParameter.should.equal("hello");
-  });
+    request.getQueryParameters().oneParameter.should.equal(1)
+    request.getQueryParameters().anotherParameter.should.equal(true)
+    request.getQueryParameters().thirdParameter.should.equal('hello')
+  })
 
-  it("Should add body parameters", function() {
+  it('Should add body parameters', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
+      .withScheme('http')
       .withBodyParameters({
-        "one" : 1,
-        "two" : true,
-        "three" : "world"
+        'one': 1,
+        'two': true,
+        'three': 'world'
       })
-      .build();
+      .build()
 
-    request.getBodyParameters().one.should.equal(1);
-    request.getBodyParameters().two.should.equal(true);
-    request.getBodyParameters().three.should.equal("world");
-  });
+    request.getBodyParameters().one.should.equal(1)
+    request.getBodyParameters().two.should.equal(true)
+    request.getBodyParameters().three.should.equal('world')
+  })
 
-  it("Should add header parameters", function() {
+  it('Should add header parameters', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
+      .withScheme('http')
       .withHeaders({
-        "Authorization" : "Basic WOOP",
-        "Content-Type" : "application/lol"
+        'Authorization': 'Basic WOOP',
+        'Content-Type': 'application/lol'
       })
-      .build();
+      .build()
 
-    request.getHeaders().Authorization.should.equal("Basic WOOP");
-    request.getHeaders()["Content-Type"].should.equal("application/lol");
-  });
+    request.getHeaders().Authorization.should.equal('Basic WOOP')
+    request.getHeaders()['Content-Type'].should.equal('application/lol')
+  })
 
-  it("Should add header parameters", function() {
+  it('Should add header parameters', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withScheme("http")
+      .withScheme('http')
       .withHeaders({
-        "Authorization" : "Bearer ANR)£454jnvfk395443enfjddsdfrgt432",
-        "Content-Type" : "application/json"
+        'Authorization': 'Bearer ANR)£454jnvfk395443enfjddsdfrgt432',
+        'Content-Type': 'application/json'
       })
-      .build();
+      .build()
 
-    request.getHeaders().Authorization.should.equal("Bearer ANR)£454jnvfk395443enfjddsdfrgt432");
-    request.getHeaders()["Content-Type"].should.equal("application/json");
-  });
+    request.getHeaders().Authorization.should.equal('Bearer ANR)£454jnvfk395443enfjddsdfrgt432')
+    request.getHeaders()['Content-Type'].should.equal('application/json')
+  })
 
-  it("Should add path", function() {
+  it('Should add path', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
+      .withHost('such.api.wow')
       .withPort(1337)
-      .withVersion("v1")
-      .withPath("/users/meriosweg")
-      .build();
+      .withVersion('v1')
+      .withPath('/users/meriosweg')
+      .build()
 
-    request.getPath().should.equal("/users/meriosweg");
-  });
+    request.getPath().should.equal('/users/meriosweg')
+  })
 
-  it("Should build URI", function() {
+  it('Should build URI', function () {
     var request = Request.builder()
-      .withHost("such.api.wow")
-      .withScheme("https")
+      .withHost('such.api.wow')
+      .withScheme('https')
       .withPort(1337)
-      .withVersion("v2")
-      .withPath("/users/meriosweg")
-      .build();
+      .withVersion('v2')
+      .withPath('/users/meriosweg')
+      .build()
 
-    request.getURI().should.equal("https://such.api.wow:1337/v2/users/meriosweg");
-  });
+    request.getURI().should.equal('https://such.api.wow:1337/v2/users/meriosweg')
+  })
 
-});
+})
