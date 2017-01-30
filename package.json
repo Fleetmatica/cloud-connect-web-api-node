@@ -1,6 +1,6 @@
 {
   "name": "cloud-connect-web-api-node",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NodeJS API wrapper for Mobile Devices Cloud Connect",
   "author": "Francesco Falanga <falanga.fra@gmail.com>",
   "homepage": "https://github.com/Fleetmatica/cloud-connect-web-api-node",

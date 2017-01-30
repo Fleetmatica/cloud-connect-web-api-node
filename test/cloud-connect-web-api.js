@@ -1078,7 +1078,6 @@ describe('CloudConnect Web API', () => {
         if (err) {
           return done(err)
         }
-        console.log(data)
         'test campaign'.should.equal(data.body.name);
         (200).should.equal(data.statusCode)
         done()
